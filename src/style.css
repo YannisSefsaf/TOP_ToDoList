@@ -1673,9 +1673,9 @@ label {
   animation: fade-out 200ms ease-in-out forwards;
 }
 
-.no-scroll {
+/* .no-scroll {
   overflow: hidden;
-}
+} */
 
 .overlay {
   opacity: 0;
@@ -1788,6 +1788,10 @@ label {
   #priority,
   #dueDate {
     font-size: 13px;
+  }
+
+  #dueDate {
+    min-width: 100%;
   }
 
   body .text {
