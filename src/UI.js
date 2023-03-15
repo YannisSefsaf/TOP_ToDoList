@@ -1,11 +1,17 @@
 import { Todo, Project, TodoList } from "./models.js";
 import { format } from "date-fns";
-
+import { closeHamburgerMenu } from "./hamburger.js";
+/* import { resetInitialize } from "./index.js";
+ */
 export class TodoListView {
   constructor(todoList) {
     this.todoList = todoList;
+    console.log("early constructor1", todoList instanceof TodoList);
+    console.log("early constructor2", this.todoList instanceof TodoList);
     this.currentCategory = { category: "inbox" };
     this.currentSortOption = { sortOption: "dateAddedNewest" };
+
+    this.resetButton = document.getElementById("resetBtn");
 
     /* FORM - ADD PROJECT */
 
@@ -32,6 +38,85 @@ export class TodoListView {
     this.editStatus = document.querySelector("#editStatus");
     this.editId = document.querySelector(".id");
     this.editButton = document.querySelector("#editItemButton");
+
+    /* SIDEBAR MOBILE - INBOX & DATES */
+    this.sidebarMobile = document.querySelector(".sidebar-mobile");
+
+    this.inboxLinkMobile = document.querySelector("#inbox-mobile");
+    this.todayLinkMobile = document.querySelector("#today-mobile");
+    this.nextWeekLinkMobile = document.querySelector("#nextWeek-mobile");
+
+    this.inboxCountLinkMobile = document.querySelector("#inboxCount-mobile");
+    this.todayCountLinkMobile = document.querySelector("#todayCount-mobile");
+    this.nextWeekCountLinkMobile = document.querySelector(
+      "#nextWeekCount-mobile"
+    );
+
+    /* SIDEBAR MOBILE - PROJECTS */
+    this.sidebarProjectGroupMobile = document.querySelector(
+      ".sidebar__group-two-expandable-projects-mobile"
+    ); // ok
+    this.projectNamesLinkMobile = document.querySelector(
+      "#sidebar__group-two-expandable-project-names-mobile"
+    ); // ok
+
+    this.projectDeleteLinkMobile = document.querySelector(
+      "#sidebar__group-two-expandable-project-delete-icons-mobile"
+    ); // ok
+
+    this.projectTodoCountLinkMobile = document.querySelector(
+      "#sidebar__group-two-expandable-project-count-mobile"
+    ); // ok
+
+    this.addProjectMobile = document.querySelector("#addProject-mobile"); // ok
+
+    this.arrowShowProjectsMobile = document.querySelector(
+      ".sidebar__group-two-icon-arrow-img-1-mobile"
+    ); // ok
+
+    /* SIDEBAR MOBILE - STATUS */
+    this.sidebarStatusGroupMobile = document.querySelector(
+      ".sidebar__group-two-expandable-status-mobile"
+    ); // ok
+
+    this.isCompletedLinkMobile = document.querySelector("#completed-mobile"); // ok
+    this.isNotCompletedLinkMobile = document.querySelector(
+      "#notCompleted-mobile"
+    ); // ok
+    this.isCompletedCountLinkMobile = document.querySelector(
+      "#completedCount-mobile"
+    ); // ok
+    this.isNotCompletedCountLinkMobile = document.querySelector(
+      "#notCompletedCount-mobile"
+    ); // ok
+
+    this.isCompletedCountUlMobile = document.querySelector(
+      "#sidebar__group-two-expandable-project-status-count-mobile"
+    ); // ok
+
+    this.arrowShowStatusMobile = document.querySelector(
+      ".sidebar__group-two-icon-arrow-img-2-mobile"
+    ); // ok
+
+    /* SIDEBAR MOBILE - FILTER */
+    this.sidebarPriorityGroupMobile = document.querySelector(
+      ".sidebar__group-two-expandable-priority-mobile"
+    );
+    this.arrowShowPriorityMobile = document.querySelector(
+      ".sidebar__group-two-icon-arrow-img-3-mobile"
+    );
+
+    this.highPriorityLinkMobile = document.querySelector("#high-mobile");
+    this.mediumPriorityLinkMobile = document.querySelector("#medium-mobile");
+    this.lowPriorityLinkMobile = document.querySelector("#low-mobile");
+
+    this.highPriorityCountLinkMobile =
+      document.querySelector("#highCount-mobile");
+    this.mediumPriorityCountLinkMobile = document.querySelector(
+      "#mediumCount-mobile"
+    );
+    this.lowPriorityCountLinkMobile =
+      document.querySelector("#lowCount-mobile");
 
     /* SIDEBAR - INBOX & DATES */
     this.inboxLink = document.querySelector("#inbox");
@@ -145,39 +230,44 @@ export class TodoListView {
     /* INITALIZE */
     this.todoDueDate.valueAsDate = new Date();
     this.todosToDisplay = this.todoList.getAllTodos();
+    console.log("this.todoList:", this.todoList);
+    console.log("this.todoList:", this.todoList.getAllTodos());
+    console.log("todostodisplay:", this.todosToDisplay);
+    this.renderMobileSidebar();
     this.renderSidebar();
     this.sortTodos();
     this.renderMainSection(this.todosToDisplay);
     this.renderProjectSelect();
     this.bindEvents();
     this.todoList.addObserver(() => this.updateView());
-    this.todoList.addObserver(() => this.renderSidebar());
+    /*    this.todoList.addObserver(() => this.renderSidebar());
     this.todoList.addObserver(() => this.renderProjectSelect());
     this.todoList.addObserver(() =>
       this.renderMainSection(this.todosToDisplay)
-    );
+    ); */
   }
 
   bindEvents() {
-    /*     Array.from(this.forms).forEach((form) => {
-      form.addEventListener(
-        "submit",
-        (event) => {
-          if (!form.checkValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
-          }
-
-          form.classList.add("was-validated");
-        },
-        false
-      );
-    }); */
-    /*   Array.from(this.forms).forEach((form) => {
-      form.addEventListener("submit", () => console.log("ok"));
+    this.resetButton.addEventListener("click", () => {
+      localStorage.clear();
+      const initialized = false;
+      localStorage.setItem("initialized", JSON.stringify(initialized));
+      location.reload();
     });
- */
+
     this.deleteIconImg = document.querySelectorAll("#deleteIcon");
+
+    this.arrowShowProjectsMobile.addEventListener("click", () =>
+      this.toggleSidebarProjectGroupMobile()
+    );
+
+    this.arrowShowStatusMobile.addEventListener("click", () =>
+      this.toggleSidebarStatusGroupMobile()
+    );
+
+    this.arrowShowPriorityMobile.addEventListener("click", () =>
+      this.toggleSidebarPriorityGroupMobile()
+    );
 
     this.arrowShowProjects.addEventListener("click", () =>
       this.toggleSidebarProjectGroup()
@@ -191,6 +281,116 @@ export class TodoListView {
       this.toggleSidebarPriorityGroup()
     );
 
+    /* MOBILE LINKS */
+
+    this.inboxLinkMobile.addEventListener("click", () => {
+      let currentSortOption = this.getCurrentSortOption();
+      this.searchBar.value = "";
+      let filteredTodos = this.filterBy("inbox");
+      filteredTodos = this.sortTodos(currentSortOption);
+      this.renderTodoList(filteredTodos);
+      closeHamburgerMenu();
+      this.sidebarMobile.classList.remove("sidebar-mobile--shown");
+      this.sidebarMobile.classList.add("sidebar-mobile--hidden");
+    });
+
+    this.todayLinkMobile.addEventListener("click", () => {
+      const currentSortOption = this.getCurrentSortOption();
+      this.searchBar.value = "";
+      let filteredTodos = this.filterBy("today");
+      filteredTodos = this.sortTodos(currentSortOption);
+      this.renderTodoList(filteredTodos);
+      closeHamburgerMenu();
+      this.sidebarMobile.classList.remove("sidebar-mobile--shown");
+      this.sidebarMobile.classList.add("sidebar-mobile--hidden");
+    });
+
+    this.nextWeekLinkMobile.addEventListener("click", () => {
+      const currentSortOption = this.getCurrentSortOption();
+      this.searchBar.value = "";
+      let filteredTodos = this.filterBy("nextweek");
+      filteredTodos = this.sortTodos(currentSortOption);
+      this.renderTodoList(filteredTodos);
+      closeHamburgerMenu();
+      this.sidebarMobile.classList.remove("sidebar-mobile--shown");
+      this.sidebarMobile.classList.add("sidebar-mobile--hidden");
+    });
+
+    this.isCompletedLinkMobile.addEventListener("click", () => {
+      const currentSortOption = this.getCurrentSortOption();
+      this.searchBar.value = "";
+      let filteredTodos = this.filterBy("completed");
+      filteredTodos = this.sortTodos(currentSortOption);
+      this.renderTodoList(filteredTodos);
+      closeHamburgerMenu();
+      this.sidebarMobile.classList.remove("sidebar-mobile--shown");
+      this.sidebarMobile.classList.add("sidebar-mobile--hidden");
+    });
+
+    this.isNotCompletedLinkMobile.addEventListener("click", () => {
+      const currentSortOption = this.getCurrentSortOption();
+      this.searchBar.value = "";
+      let filteredTodos = this.filterBy("notcompleted");
+      filteredTodos = this.sortTodos(currentSortOption);
+      this.renderTodoList(filteredTodos);
+      closeHamburgerMenu();
+      this.sidebarMobile.classList.remove("sidebar-mobile--shown");
+      this.sidebarMobile.classList.add("sidebar-mobile--hidden");
+    });
+
+    this.highPriorityLinkMobile.addEventListener("click", () => {
+      const currentSortOption = this.getCurrentSortOption();
+      this.searchBar.value = "";
+      let filteredTodos = this.filterBy("highpriority");
+      filteredTodos = this.sortTodos(currentSortOption);
+      this.renderTodoList(filteredTodos);
+      closeHamburgerMenu();
+      this.sidebarMobile.classList.remove("sidebar-mobile--shown");
+      this.sidebarMobile.classList.add("sidebar-mobile--hidden");
+    });
+
+    this.mediumPriorityLinkMobile.addEventListener("click", () => {
+      const currentSortOption = this.getCurrentSortOption();
+      this.searchBar.value = "";
+      let filteredTodos = this.filterBy("mediumpriority");
+      filteredTodos = this.sortTodos(currentSortOption);
+      this.renderTodoList(filteredTodos);
+      closeHamburgerMenu();
+      this.sidebarMobile.classList.remove("sidebar-mobile--shown");
+      this.sidebarMobile.classList.add("sidebar-mobile--hidden");
+    });
+
+    this.lowPriorityLinkMobile.addEventListener("click", () => {
+      const currentSortOption = this.getCurrentSortOption();
+      this.searchBar.value = "";
+      let filteredTodos = this.filterBy("lowpriority");
+      filteredTodos = this.sortTodos(currentSortOption);
+      this.renderTodoList(filteredTodos);
+      closeHamburgerMenu();
+      this.sidebarMobile.classList.remove("sidebar-mobile--shown");
+      this.sidebarMobile.classList.add("sidebar-mobile--hidden");
+    });
+
+    this.projectNamesLinkMobile.addEventListener("click", (e) => {
+      if (e.target.matches(".sidebar__group-two-expandable-project-name")) {
+        this.searchBar.value = "";
+        const currentSortOption = this.getCurrentSortOption();
+        let filteredTodos = this.filterBy("project", e.target.dataset.id);
+        filteredTodos = this.sortTodos(currentSortOption);
+        this.renderTodoList(filteredTodos);
+        closeHamburgerMenu();
+        this.sidebarMobile.classList.remove("sidebar-mobile--shown");
+        this.sidebarMobile.classList.add("sidebar-mobile--hidden");
+      }
+    });
+
+    this.projectDeleteLinkMobile.addEventListener("click", (e) => {
+      if (e.target.matches(".sidebar__group-two-icon-delete-img")) {
+        this.deleteProjectFunc(e.target.id);
+      }
+    });
+
+    /* DESKTOP LINKS */
     this.inboxLink.addEventListener("click", () => {
       let currentSortOption = this.getCurrentSortOption();
       this.searchBar.value = "";
@@ -265,12 +465,6 @@ export class TodoListView {
       }
     });
 
-    this.projectDeleteLink.addEventListener("click", (e) => {
-      if (e.target.matches(".sidebar__group-two-icon-delete-img")) {
-        this.deleteProjectFunc(e.target.id);
-      }
-    });
-
     this.showTodoForm.addEventListener("click", () => {
       this.toggleAddTodoForm();
     });
@@ -293,6 +487,9 @@ export class TodoListView {
     });
 
     this.addProject.addEventListener("click", () => this.showAddProjectForm());
+    this.addProjectMobile.addEventListener("click", () =>
+      this.showAddProjectForm()
+    );
 
     this.background.addEventListener("click", () => {
       this.removeAddProjectForm();
@@ -764,6 +961,80 @@ export class TodoListView {
     this.renderTodoList(todos);
   }
 
+  renderMobileSidebar() {
+    this.projectNamesLinkMobile.innerHTML = "";
+    this.projectDeleteLinkMobile.innerHTML = "";
+    this.projectTodoCountLinkMobile.innerHTML = "";
+    this.inboxCountLinkMobile.innerHTML = "";
+    this.todayCountLinkMobile.innerHTML = "";
+    this.nextWeekCountLinkMobile.innerHTML = "";
+    this.isCompletedCountLinkMobile.innerHTML = "";
+    this.isNotCompletedCountLinkMobile.innerHTML = "";
+    this.highPriorityCountLinkMobile.innerHTML = "";
+    this.mediumPriorityCountLinkMobile.innerHTML = "";
+    this.lowPriorityCountLinkMobile.innerHTML = "";
+
+    const highPriorityCount = this.todoList.getTodoCountByPriority("3");
+    const mediumPriorityCount = this.todoList.getTodoCountByPriority("2");
+    const lowPriorityCount = this.todoList.getTodoCountByPriority("1");
+
+    this.highPriorityCountLinkMobile.innerHTML = `${highPriorityCount}`;
+    this.mediumPriorityCountLinkMobile.innerHTML = `${mediumPriorityCount}`;
+    this.lowPriorityCountLinkMobile.innerHTML = `${lowPriorityCount}`;
+
+    const projects = this.todoList.getAllProjects();
+    const projectTodoCount = this.todoList.getTodoCountByProject();
+
+    const today = new Date();
+    const nextWeek = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+
+    const inboxTodoCount = this.todoList.getAllTodos().length;
+    const todayTodoCount = this.todoList.getTodoCountByDate(today);
+    const nextWeekTodoCount = this.todoList.getTodoCountByDate(nextWeek);
+    const isCompletedCount = this.todoList.getTodoCountByStatus(true);
+    const isNotCompletedCount = this.todoList.getTodoCountByStatus(false);
+
+    this.isCompletedCountLinkMobile.innerHTML = `${isCompletedCount}`;
+    this.isNotCompletedCountLinkMobile.innerHTML = `${isNotCompletedCount}`;
+
+    projects.forEach((project) => {
+      const li = this.createElem(
+        "li",
+        "sidebar__group-two-expandable-project-name",
+        `${project.title}`
+      );
+      li.dataset.id = `${project.id}`;
+      li.classList.add("cursor");
+      const liImg = this.createElem("li", "sidebar-delete-project");
+
+      const deleteProjectIcon = this.createElem(
+        "img",
+        "sidebar__group-two-icon-delete-img",
+        "",
+        `./img/delete.png`
+      );
+      deleteProjectIcon.id = `${project.id}`;
+      deleteProjectIcon.classList.add("cursor");
+      liImg.appendChild(deleteProjectIcon);
+      this.projectNamesLinkMobile.appendChild(li);
+      this.projectDeleteLinkMobile.appendChild(liImg);
+    });
+
+    projectTodoCount.forEach((todoCount) => {
+      const li = this.createElem(
+        "li",
+        "sidebar__group-two-expandable-project-count",
+        `${todoCount}`
+      );
+      li.classList.add("italic");
+      this.projectTodoCountLinkMobile.appendChild(li);
+    });
+
+    this.inboxCountLinkMobile.innerHTML = `${inboxTodoCount}`;
+    this.todayCountLinkMobile.innerHTML = `${todayTodoCount}`;
+    this.nextWeekCountLinkMobile.innerHTML = `${nextWeekTodoCount}`;
+  }
+
   renderSidebar() {
     this.projectNamesLink.innerHTML = "";
     this.projectDeleteLink.innerHTML = "";
@@ -814,7 +1085,7 @@ export class TodoListView {
         "img",
         "sidebar__group-two-icon-delete-img",
         "",
-        `../src/img/delete.png`
+        `./img/delete.png`
       );
       deleteProjectIcon.id = `${project.id}`;
       deleteProjectIcon.classList.add("cursor");
@@ -907,17 +1178,17 @@ export class TodoListView {
         "img",
         "todo-item__due-date-img",
         ""
-        /* "../src/img/5473658-200.png" */
+        /* "./img/5473658-200.png" */
       );
 
       if (this.isToday(`${todo.dueDate}`)) {
-        dueDateImg.src = "../src/img/3644080-200.png";
+        dueDateImg.src = "./img/3644080-200.png";
         dueDateText.classList.add("today");
       } else if (this.isWithinNextWeek(`${todo.dueDate}`)) {
-        dueDateImg.src = "../src/img/5473658-200.png";
+        dueDateImg.src = "./img/5473658-200.png";
         dueDateText.classList.add("nextweek");
       } else {
-        dueDateImg.src = "../src/img/1052664-200.png";
+        dueDateImg.src = "./img/1052664-200.png";
         dueDateText.classList.add("inbox");
       }
       /* const buttonDetails = this.createElem("a", "button__details", "Details");
@@ -928,7 +1199,7 @@ export class TodoListView {
         "img",
         "todo-item__icon",
         "",
-        "../src/img/edit.png"
+        "./img/edit.png"
       );
       editImg.classList.add("edit__icon");
       editImg.classList.add("cursor");
@@ -938,7 +1209,7 @@ export class TodoListView {
         "img",
         "todo-item__icon",
         "",
-        "../src/img/delete.png"
+        "./img/delete.png"
       );
       if (todo.isComplete) {
         todoTitle.style.textDecoration = "line-through";
@@ -1023,21 +1294,35 @@ export class TodoListView {
     filteredTodos = this.sortTodos(currentSortOption);
 
     this.renderTodoList(filteredTodos);
+    this.renderMobileSidebar();
     this.renderSidebar();
     this.renderProjectSelect();
   }
 
   // toggle functions
 
+  toggleSidebarProjectGroupMobile() {
+    this.sidebarProjectGroupMobile.classList.toggle("show");
+
+    this.arrowShowProjectsMobile.classList.toggle("collapsed");
+  }
+
+  toggleSidebarStatusGroupMobile() {
+    this.sidebarStatusGroupMobile.classList.toggle("show");
+
+    this.arrowShowStatusMobile.classList.toggle("collapsed");
+  }
+
+  toggleSidebarPriorityGroupMobile() {
+    this.sidebarPriorityGroupMobile.classList.toggle("show");
+
+    this.arrowShowPriorityMobile.classList.toggle("collapsed");
+  }
+
   toggleSidebarProjectGroup() {
     this.sidebarProjectGroup.classList.toggle("show");
 
     this.arrowShowProjects.classList.toggle("collapsed");
-  }
-
-  toggleIcons() {
-    this.deleteIcon.classList.toggle("show");
-    this.editIcon.classList.toggle("show");
   }
 
   toggleSidebarStatusGroup() {
@@ -1050,6 +1335,11 @@ export class TodoListView {
     this.sidebarPriorityGroup.classList.toggle("show");
 
     this.arrowShowPriority.classList.toggle("collapsed");
+  }
+
+  toggleIcons() {
+    this.deleteIcon.classList.toggle("show");
+    this.editIcon.classList.toggle("show");
   }
 
   toggleSortByMenu() {
@@ -1066,6 +1356,8 @@ export class TodoListView {
 
   toggleComplete(todoId) {
     const todo = this.todoList.findTodoById(todoId);
+    console.log(todo);
+    console.log(todo instanceof Todo);
     todo.toggleComplete();
     this.updateView();
   }

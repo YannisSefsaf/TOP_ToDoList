@@ -1,3 +1,5 @@
+import { saveTodoList } from "./storage";
+
 export class Todo {
   constructor(
     title,
@@ -18,10 +20,12 @@ export class Todo {
     this.isComplete = isComplete;
     this.id = `todo-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
     this.dateAdded = dateAdded;
+    this.observers = [];
   }
 
   toggleComplete() {
     this.isComplete = !this.isComplete;
+    this.notifyObservers();
   }
 
   updateStatus(status) {
@@ -30,30 +34,51 @@ export class Todo {
     } else if (status === "1") {
       this.isComplete = false;
     }
+    this.notifyObservers();
   }
 
   updateTitle(title) {
     this.title = title;
+    this.notifyObservers();
   }
 
   updateDescription(description) {
     this.description = description;
+    this.notifyObservers();
   }
 
   updateDueDate(dueDate) {
     this.dueDate = dueDate;
+    this.notifyObservers();
   }
 
   updatePriority(priority) {
     this.priority = priority;
+    this.notifyObservers();
   }
 
   updateProject(project) {
     this.project = project;
+    this.notifyObservers();
   }
 
   updateProjectId(projectId) {
     this.projectId = projectId;
+    this.notifyObservers();
+  }
+
+  // observer pattern methods
+
+  addObserver(observer) {
+    this.observers.push(observer);
+  }
+
+  /*   removeObserver(observer) {
+    this.observers.push(observer);
+  } */
+
+  notifyObservers() {
+    this.observers.forEach((observer) => observer(this));
   }
 }
 
@@ -62,10 +87,12 @@ export class Project {
     this.title = title;
     this.todos = [];
     this.id = `project-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    this.observers = [];
   }
 
   updateProjectTitle(title) {
     this.title = title;
+    this.notifyObservers();
   }
 
   getProjectTodos() {
@@ -78,16 +105,41 @@ export class Project {
 
   addTodo(...todo) {
     this.todos.push(...todo);
+    this.notifyObservers();
+  }
+
+  // observer pattern methods
+
+  addObserver(observer) {
+    this.observers.push(observer);
+  }
+
+  removeObserver(observer) {
+    this.observers.push(observer);
+  }
+
+  notifyObservers() {
+    this.observers.forEach((observer) => observer(this));
   }
 }
 
 export class TodoList {
-  constructor() {
-    this.projects = [];
-    this.todos = [];
+  constructor(projects = [], todos = []) {
+    this.projects = projects;
+    this.todos = todos;
     this.observers = [];
     this.defaultProject = new Project("Default");
     this.projects.push(this.defaultProject);
+    for (const project of this.projects) {
+      if (project instanceof Project) {
+        project.addObserver(() => this.save());
+      }
+    }
+    for (const todo of this.todos) {
+      if (todo instanceof Todo) {
+        todo.addObserver(() => this.save());
+      }
+    }
   }
 
   // helper functions
@@ -112,9 +164,10 @@ export class TodoList {
   addAProject(...projects) {
     projects.forEach((project) => {
       this.projects.push(project);
-      this.todos.push(project.todos);
+      this.todos = [...this.todos, ...project.todos];
     });
     this.notifyObservers();
+    this.save();
   }
 
   addATodo(projectId, todo) {
@@ -125,6 +178,7 @@ export class TodoList {
       []
     );
     this.notifyObservers();
+    this.save();
   }
 
   // delete todo by id and by project
@@ -146,6 +200,7 @@ export class TodoList {
       );
     }
     this.notifyObservers();
+    this.save();
   }
 
   deleteProject(projectId) {
@@ -155,7 +210,9 @@ export class TodoList {
     );
     this.todos = this.todos.filter((todo) => todo.project !== project);
     this.notifyObservers();
+    this.save();
   }
+
   // get names & counts: total, by project, by date, by status
 
   getAllProjects() {
@@ -193,6 +250,7 @@ export class TodoList {
   }
 
   getAllTodos() {
+    console.log("ako");
     return this.projects.reduce((todos, project) => {
       return todos.concat(project.todos);
     }, []);
@@ -207,82 +265,6 @@ export class TodoList {
   getProjectById(projectId) {
     let project = this.findProject(projectId);
     return project;
-  }
-
-  isToday(date) {
-    const today = new Date().setUTCHours(0, 0, 0, 0);
-    const dateObj = new Date(date).setUTCHours(0, 0, 0, 0);
-    return dateObj === today;
-  }
-
-  isWithinNextWeek(date) {
-    const today = new Date();
-    const dateObj = new Date(date);
-    const nextWeek = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
-    return (
-      dateObj.setUTCHours(0, 0, 0, 0) <= nextWeek.setUTCHours(0, 0, 0, 0) &&
-      dateObj.setUTCHours(0, 0, 0, 0) >= today.setUTCHours(0, 0, 0, 0)
-    );
-  }
-
-  /*   getTodoCountByDate(dueDate) {
-    const today = new Date().setUTCHours(0, 0, 0, 0);
-    return this.projects.reduce((total, project) => {
-      return (
-        total +
-        (project.todos?.filter((todo) => {
-          const todoDueDate = new Date(todo.dueDate).setUTCHours(0, 0, 0, 0);
-          return todoDueDate <= dueDate && todoDueDate >= today;
-        }).length || 0)
-      );
-    }, 0);
-  } */
-  /*   getTodoCountByDate(dueDate) {
-    const userTimeZoneOffset = new Date().getTimezoneOffset() * 60000;
-    const today = new Date(Date.now() - userTimeZoneOffset);
-    const dateObj = new Date(dueDate);
-    return this.projects.reduce((total, project) => {
-      return (
-        total +
-        (project.todos?.filter((todo) => {
-          const todoDueDate = new Date(todo.dueDate);
-          const userTodoDueDate = new Date(
-            todoDueDate.getTime() - userTimeZoneOffset
-          ).setUTCHours(0, 0, 0, 0);
-          return userTodoDueDate <= dateObj && userTodoDueDate >= today;
-        }).length || 0)
-      );
-    }, 0);
-  }
- */
-
-  isToday(date) {
-    const userTimeZoneOffset = new Date().getTimezoneOffset();
-    const today = new Date();
-    const userToday = today.setUTCHours(0, `${userTimeZoneOffset}`, 0, 0);
-    const dateObj = new Date(date).setUTCHours(
-      0,
-      `${userTimeZoneOffset}`,
-      0,
-      0
-    );
-    return dateObj === userToday;
-  }
-
-  isWithinNextWeek(date) {
-    const userTimeZoneOffset = new Date().getTimezoneOffset();
-    const today = new Date();
-    const userToday = today.setUTCHours(0, `${userTimeZoneOffset}`, 0, 0);
-    const dateObj = new Date(date).setUTCHours(
-      0,
-      `${userTimeZoneOffset}`,
-      0,
-      0
-    );
-    const nextWeek = new Date(
-      today.getTime() + 7 * 24 * 60 * 60 * 1000
-    ).setUTCHours(0, `${userTimeZoneOffset}`, 0, 0);
-    return dateObj <= nextWeek && dateObj >= userToday;
   }
 
   getTodoCountByDate(dueDate) {
@@ -338,11 +320,20 @@ export class TodoList {
     this.observers.push(observer);
   }
 
-  removeObserver(observer) {
+  /*   removeObserver(observer) {
     this.observers.push(observer);
-  }
+  } */
 
   notifyObservers() {
     this.observers.forEach((observer) => observer());
+  }
+
+  save() {
+    saveTodoList(
+      this.projects,
+      this.todos,
+      this.observers,
+      this.defaultProject
+    );
   }
 }

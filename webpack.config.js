@@ -1,5 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   /*   mode: "development",
@@ -14,6 +15,14 @@ module.exports = {
       myPageHeader: "Hello World",
       template: "./src/template.html",
       filename: "./index.html", //relative to root of the application
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: "src/img",
+          to: "img",
+        },
+      ],
     }),
   ],
   output: {
