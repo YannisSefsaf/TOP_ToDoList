@@ -6,8 +6,6 @@ import { closeHamburgerMenu } from "./hamburger.js";
 export class TodoListView {
   constructor(todoList) {
     this.todoList = todoList;
-    console.log("early constructor1", todoList instanceof TodoList);
-    console.log("early constructor2", this.todoList instanceof TodoList);
     this.currentCategory = { category: "inbox" };
     this.currentSortOption = { sortOption: "dateAddedNewest" };
 
@@ -230,9 +228,6 @@ export class TodoListView {
     /* INITALIZE */
     this.todoDueDate.valueAsDate = new Date();
     this.todosToDisplay = this.todoList.getAllTodos();
-    console.log("this.todoList:", this.todoList);
-    console.log("this.todoList:", this.todoList.getAllTodos());
-    console.log("todostodisplay:", this.todosToDisplay);
     this.renderMobileSidebar();
     this.renderSidebar();
     this.sortTodos();
@@ -240,11 +235,6 @@ export class TodoListView {
     this.renderProjectSelect();
     this.bindEvents();
     this.todoList.addObserver(() => this.updateView());
-    /*    this.todoList.addObserver(() => this.renderSidebar());
-    this.todoList.addObserver(() => this.renderProjectSelect());
-    this.todoList.addObserver(() =>
-      this.renderMainSection(this.todosToDisplay)
-    ); */
   }
 
   bindEvents() {
@@ -471,10 +461,8 @@ export class TodoListView {
 
     this.searchBar.addEventListener("keyup", () => {
       const currentSortOption = this.getCurrentSortOption();
-      console.log(`current sort option: ${currentSortOption}`);
       const currentCategory = this.getCurrentCategory();
       const currentId = this.getCurrentId();
-      console.log(`current category: ${currentCategory}`);
       let filteredTodos;
       if (currentCategory === "project") {
         filteredTodos = this.filterBy("project", currentId);
@@ -577,7 +565,6 @@ export class TodoListView {
           currentFilter = this.getCurrentCategory();
         }
         let filteredTodos = this.filterTodos(currentFilter);
-        console.log(e.target.getAttribute("id"));
         filteredTodos = this.sortTodos(e.target.getAttribute("id"), e);
         this.renderTodoList(filteredTodos);
       }
@@ -592,26 +579,17 @@ export class TodoListView {
   }
 
   // add/delete todo and project functions
-
-  /*   addTodoFunc(e) {
-    e.preventDefault();
-    const date = this.todoDueDate.value.split("-").map(Number);
-    const projectId =
-      this.todoProject.options[this.todoProject.selectedIndex].dataset.id;
-    const newTodo = new Todo(
-      this.todoName.value,
-      this.todoDescription.value,
-      this.todoProject.value,
-      projectId,
-      format(new Date(date[0], date[1] - 1, date[2]), "MM-dd-yyyy"),
-      this.todoPriority.value,
-      this.todoIsComplete(this.todoStatus)
-    );
-    this.todoList.addATodo(projectId, newTodo);
-    this.clearFormFields();
-    this.toggleAddTodoForm();
-  } */
-
+  /*       if (isIOS) {
+        tadaDate = format(
+          new Date(date[2], date[0], date[1] - 1),
+          "MM-dd-yyyy"
+        );
+      } else {
+        tadaDate = format(
+          new Date(date[0], date[1] - 1, date[2]),
+          "MM-dd-yyyy"
+        );
+      }*/
   addTodoFunc(e) {
     e.preventDefault();
     const form = e.target.form;
@@ -624,7 +602,7 @@ export class TodoListView {
         this.todoDescription.value,
         this.todoProject.value,
         projectId,
-        format(new Date(date[0], date[1] - 1, date[2]), "MM-dd-yyyy"),
+        format(new Date(date[0], date[1] - 1, date[2]), "yyyy-MM-dd"),
         this.todoPriority.value,
         this.todoIsComplete(this.todoStatus)
       );
@@ -636,6 +614,7 @@ export class TodoListView {
       form.classList.add("was-validated");
     }
   }
+
   addProjectFunc(e, projectName) {
     e.preventDefault();
     const form = e.target.form;
@@ -658,7 +637,6 @@ export class TodoListView {
   deleteProjectFunc(projectId) {
     const projectToDelete = this.todoList.findProject(projectId);
     const currentProjectId = this.getCurrentId();
-    console.log(currentProjectId);
     if (projectToDelete.id === currentProjectId) {
       let currentSortOption = this.getCurrentSortOption();
       this.searchBar.value = "";
@@ -1356,8 +1334,6 @@ export class TodoListView {
 
   toggleComplete(todoId) {
     const todo = this.todoList.findTodoById(todoId);
-    console.log(todo);
-    console.log(todo instanceof Todo);
     todo.toggleComplete();
     this.updateView();
   }

@@ -875,6 +875,7 @@ body {
 }
 
 .sidebar-mobile {
+  overflow-y: scroll;
   box-sizing: border-box;
   position: absolute;
   z-index: 1;
@@ -1673,9 +1674,9 @@ label {
   animation: fade-out 200ms ease-in-out forwards;
 }
 
-/* .no-scroll {
+.no-scroll {
   overflow: hidden;
-} */
+}
 
 .overlay {
   opacity: 0;
@@ -1791,7 +1792,8 @@ label {
   }
 
   #dueDate {
-    min-width: 100%;
+    min-width: calc(100% - 1rem);
+    box-sizing: border-box;
   }
 
   body .text {

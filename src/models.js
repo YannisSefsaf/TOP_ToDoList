@@ -250,7 +250,6 @@ export class TodoList {
   }
 
   getAllTodos() {
-    console.log("ako");
     return this.projects.reduce((todos, project) => {
       return todos.concat(project.todos);
     }, []);
