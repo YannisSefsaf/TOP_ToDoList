@@ -6,6 +6,16 @@ const sidebarMobile = document.querySelector(".sidebar-mobile");
 const overlay = document.querySelector(".overlay");
 const mainSection = document.querySelector(".main-section");
 
+function showSideBar() {
+  sidebarMobile.classList.remove("sidebar-mobile--hidden");
+  sidebarMobile.classList.add("sidebar-mobile--shown");
+}
+
+function hideSideBar() {
+  sidebarMobile.classList.remove("sidebar-mobile--shown");
+  sidebarMobile.classList.add("sidebar-mobile--hidden");
+}
+
 const closeHamburgerMenu = () => {
   body.classList.remove("no-scroll");
   header.classList.remove("open");
@@ -42,18 +52,15 @@ btnHamburger.addEventListener("click", function () {
 
 btnHamburger.addEventListener("click", function () {
   if (header.classList.contains("open")) {
-    sidebarMobile.classList.remove("sidebar-mobile--hidden");
-    sidebarMobile.classList.add("sidebar-mobile--shown");
+    showSideBar();
   } else {
-    sidebarMobile.classList.remove("sidebar-mobile--shown");
-    sidebarMobile.classList.add("sidebar-mobile--hidden");
+    hideSideBar();
   }
 });
 
 overlay.addEventListener("click", () => {
   closeHamburgerMenu();
-  sidebarMobile.classList.remove("sidebar-mobile--shown");
-  sidebarMobile.classList.add("sidebar-mobile--hidden");
+  hideSideBar();
 });
 
 window.onresize = handleResizeWindow;
