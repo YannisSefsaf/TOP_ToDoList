@@ -183,7 +183,7 @@ export class TodoListView {
     /* MAIN SECTION */
     this.todoGrid = document.querySelector(".main-section__todo-grid");
     this.title = document.querySelector(".main-section__title");
-    this.sortBy = document.querySelector(".main-section__sort-container");
+    this.sortBy = document.querySelector(".sort-outside-container");
     this.sortByMobile = document.querySelector(
       ".main-section__sort-container-mobile"
     );
@@ -455,6 +455,12 @@ export class TodoListView {
       }
     });
 
+    this.projectDeleteLink.addEventListener("click", (e) => {
+      if (e.target.matches(".sidebar__group-two-icon-delete-img")) {
+        this.deleteProjectFunc(e.target.id);
+      }
+    });
+
     this.showTodoForm.addEventListener("click", () => {
       this.toggleAddTodoForm();
     });
@@ -475,9 +481,12 @@ export class TodoListView {
     });
 
     this.addProject.addEventListener("click", () => this.showAddProjectForm());
-    this.addProjectMobile.addEventListener("click", () =>
-      this.showAddProjectForm()
-    );
+    this.addProjectMobile.addEventListener("click", () => {
+      closeHamburgerMenu();
+      this.sidebarMobile.classList.remove("sidebar-mobile--shown");
+      this.sidebarMobile.classList.add("sidebar-mobile--hidden");
+      this.showAddProjectForm();
+    });
 
     this.background.addEventListener("click", () => {
       this.removeAddProjectForm();
@@ -504,25 +513,6 @@ export class TodoListView {
       }
     });
 
-    /*    this.todoGrid.addEventListener("mouseenter", (e) => {
-      /*  if (e.target.id === "todo-item") { */
-
-    /*  const del = e.target.querySelector("#deleteIcon");
-        const edit = e.target.querySelector("#editIcon");
-        del.classList.toggle("show");
-        edit.classList.toggle("show"); */
-    /* } */
-    /*  });
-
-    this.todoGrid.addEventListener("mouseleave", (e) => {
-      if (e.target.id === "todo-item") {
-        const del = e.target.querySelector("#deleteIcon");
-        const edit = e.target.querySelector("#editIcon");
-        del.classList.toggle("show");
-        edit.classList.toggle("show");
-      }
-    }); */
-
     this.todoGrid.addEventListener("click", (e) => {
       if (e.target.id === "deleteIcon") {
         this.deleteTodoFunc(e, e.target.dataset.id);
@@ -542,18 +532,26 @@ export class TodoListView {
     this.sortByMobile.addEventListener("click", () => {
       this.toggleSortByMobileMenu();
     });
-    /* 
-    this.sortByMobile.addEventListener("mouseleave", () => {
-      this.toggleSortByMobileMenu();
-    }); */
 
     this.sortBy.addEventListener("click", () => {
+      console.log("ako");
       this.toggleSortByMenu();
     });
 
-    /*  this.sortBy.addEventListener("mouseleave", () => {
-      this.toggleSortByMenu();
-    }); */
+    this.sortByFieldsContainerMobile.addEventListener("click", (e) => {
+      if (e.target.classList.contains("sorter-mobile")) {
+        e.preventDefault();
+        let currentFilter;
+        if (this.getCurrentId()) {
+          currentFilter = this.getCurrentId();
+        } else {
+          currentFilter = this.getCurrentCategory();
+        }
+        let filteredTodos = this.filterTodos(currentFilter);
+        filteredTodos = this.sortTodos(e.target.getAttribute("id"), e);
+        this.renderTodoList(filteredTodos);
+      }
+    });
 
     this.sortByFieldsContainer.addEventListener("click", (e) => {
       if (e.target.classList.contains("sorter")) {
@@ -579,17 +577,7 @@ export class TodoListView {
   }
 
   // add/delete todo and project functions
-  /*       if (isIOS) {
-        tadaDate = format(
-          new Date(date[2], date[0], date[1] - 1),
-          "MM-dd-yyyy"
-        );
-      } else {
-        tadaDate = format(
-          new Date(date[0], date[1] - 1, date[2]),
-          "MM-dd-yyyy"
-        );
-      }*/
+
   addTodoFunc(e) {
     e.preventDefault();
     const form = e.target.form;
@@ -1140,11 +1128,7 @@ export class TodoListView {
       );
       todoNotes.dataset.id = todo.id;
 
-      const dueDateDiv = this.createElem(
-        "div",
-        "todo-item__due-date"
-        /* `${todo.dueDate}` */
-      );
+      const dueDateDiv = this.createElem("div", "todo-item__due-date");
 
       const dueDateText = this.createElem(
         "div",
@@ -1152,12 +1136,7 @@ export class TodoListView {
         `${todo.dueDate}`
       );
 
-      const dueDateImg = this.createElem(
-        "img",
-        "todo-item__due-date-img",
-        ""
-        /* "./img/5473658-200.png" */
-      );
+      const dueDateImg = this.createElem("img", "todo-item__due-date-img", "");
 
       if (this.isToday(`${todo.dueDate}`)) {
         dueDateImg.src = "./img/3644080-200.png";
