@@ -6,11 +6,11 @@
 
 <h2>Features</h2>
 <ul>
-<li>- New todos can be added, and existing todos can be expanded (view details), edited, and deleted.</li>
-<li>- Todos can be sorted by due date, project name, date added, status, and priority level.</li>
-<li>- New projects can be added, and existing projects can be deleted.</li>
-<li>- The app uses local storage  which allows users to retrieve their projects and todos when reloading the page.</li>
-<li>- The page is mobile-responsive.</li>
+<li>New todos can be added, and existing todos can be expanded (view details), edited, and deleted.</li>
+<li>Todos can be sorted by due date, project name, date added, status, and priority level.</li>
+<li>New projects can be added, and existing projects can be deleted.</li>
+<li>The app uses local storage  which allows users to retrieve their projects and todos when reloading the page.</li>
+<li>The page is mobile-responsive.</li>
 </ul>
 
 <h2>Getting Started</h2>
