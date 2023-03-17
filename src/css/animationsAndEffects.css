@@ -1,0 +1,150 @@
+/* ANIMATION */
+
+.has-fade {
+  visibility: hidden;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    visibility: hidden;
+    opacity: 0;
+  }
+  1% {
+    visibility: visible;
+    opacity: 0;
+  }
+  to {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+.fade-in {
+  animation: fade-in 200ms ease-in-out forwards;
+}
+
+@keyframes fade-out {
+  from {
+    visibility: visible;
+    opacity: 1;
+  }
+  99% {
+    visibility: visible;
+    opacity: 0;
+  }
+  to {
+    visibility: hidden;
+    opacity: 0;
+  }
+}
+.fade-out {
+  animation: fade-out 200ms ease-in-out forwards;
+}
+
+.no-scroll {
+  overflow: hidden;
+}
+
+/* COLLAPSE TRANSITIONS */
+
+.collapsed {
+  transform: rotate(-90deg);
+}
+
+.collapsing {
+  height: 0;
+  overflow: hidden;
+  transition: height 0.35s ease-in-out;
+}
+
+/* HIDE CLASS */
+
+.completed {
+  display: block !important;
+}
+
+.form__view-todo:not(.show),
+.checkmark:not(.show),
+.background:not(.show),
+.form__add-project:not(.show),
+.form__edit-todo:not(.show),
+.collapse:not(.show),
+.main-section__sort-fields-container:not(.show),
+.main-section__sort-fields-container-mobile:not(.show) {
+  display: none;
+}
+
+.hide {
+  display: none;
+}
+
+.hide-for-mobile {
+  display: block;
+}
+
+.hide-for-desktop {
+  display: none;
+}
+
+/* BACKGROUND EFFECT */
+
+.background {
+  z-index: 1;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.35);
+  height: 100vh;
+  width: 100vw;
+}
+
+.navbar__container,
+.main__grid-container {
+  z-index: 0;
+}
+
+.overlay {
+  z-index: 0;
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  opacity: 0;
+  background-image: linear-gradient(hsl(233deg, 26%, 24%), rgb(0 0 0 / 35%));
+  height: 100%;
+  width: 100%;
+}
+
+.overlay.fade-in {
+  display: block;
+}
+
+/* CURSOR EFFECT */
+
+.cursor {
+  cursor: pointer;
+}
+
+.cursor__light {
+  cursor: pointer;
+}
+
+.cursor:hover {
+  font-weight: 900;
+}

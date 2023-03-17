@@ -1,0 +1,272 @@
+/* MEDIA QUERIES */
+
+@media (min-width: 1400px) {
+  .sidebar {
+    padding: 4rem 1.5rem;
+  }
+}
+
+@media (max-width: 1400px) {
+  /* MAIN SECTION AND SIDEBARS */
+
+  .main__grid-container {
+    display: block;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  /* FORMS */
+
+  body .form__view-todo {
+    z-index: 2;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(7.5%, -50%);
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid var(--color-black-05);
+    border-radius: 10px;
+    background-color: white;
+    max-height: 90vh;
+    height: auto;
+    width: 87.5%;
+    padding: 2rem;
+    box-shadow: rgb(0 0 0 / 10%) 3px 3px 8px;
+    gap: 1.75rem;
+  }
+
+  body .form__view-main {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0;
+    gap: 1.75rem;
+  }
+
+  body .form__view-sidebar {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    height: auto;
+    width: 100%;
+    padding: 0;
+    gap: 1.75rem;
+  }
+
+  body .form__edit-todo {
+    z-index: 2;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(7.5%, -50%);
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid var(--color-black-05);
+    border-radius: 10px;
+    background-color: white;
+    max-height: 90vh;
+    height: auto;
+    width: 87.5%;
+    padding: 2rem;
+    box-shadow: rgb(0 0 0 / 10%) 3px 3px 8px;
+    gap: 1rem;
+  }
+
+  body .form__edit-main {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0;
+    gap: 1.5rem;
+  }
+
+  body .form__edit-sidebar {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    height: auto;
+    width: 100%;
+    padding: 0;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 960px) {
+  /* FORMS */
+
+  .form-title {
+    margin-bottom: 1rem;
+    padding-left: 0;
+  }
+
+  body .form__add-todo-grid {
+    display: flex;
+    flex-direction: column;
+  }
+
+  body .form__add-project {
+    z-index: 2;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(7.5%, -50%);
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-black-05);
+    border-radius: 10px;
+    background-color: white;
+    max-height: 90vh;
+    height: auto;
+    width: 87.5%;
+    padding: 3rem;
+    box-shadow: rgb(0 0 0 / 10%) 3px 3px 8px;
+    gap: 2rem;
+  }
+
+  body .form__edit-todo-input,
+  .select__edit-project,
+  .form__add-todo-input,
+  #editPriority,
+  #editStatus,
+  #editDueDate {
+    font-size: 14px !important;
+  }
+
+  #editItemButton {
+    margin-top: 0.5rem;
+  }
+
+  body .add-todo__img-container {
+    display: inline-flex;
+    height: 20px;
+    width: 20px;
+    padding: 5px;
+  }
+
+  body .add-todo__plus-img {
+    height: 10px;
+    width: 10px;
+  }
+
+  body .add-todo__para {
+    font-size: 0.875rem;
+  }
+
+  #editIcon:not(.show),
+  #deleteIcon:not(.show) {
+    display: block;
+  }
+
+  #project,
+  #status,
+  #priority,
+  #dueDate {
+    font-size: 13px;
+  }
+
+  #dueDate {
+    min-width: calc(100% - 1rem);
+  }
+
+  /* SIDEBAR */
+
+  .sidebar__group-two-icon-delete-img {
+    height: 13px;
+    width: 13px;
+  }
+
+  .sidebar-delete-project {
+    height: 14px;
+  }
+
+  body .text {
+    font-size: 0.875rem;
+  }
+
+  /* HIDE */
+
+  body .hide-for-mobile {
+    display: none;
+  }
+
+  .hide-for-desktop {
+    display: flex;
+  }
+
+  /* MAIN SECTION - TODOLIST */
+
+  body .todo-details {
+    max-width: 100%;
+    word-wrap: break-word;
+    font-size: 15px;
+  }
+
+  body .main-section {
+    padding: 3rem 0rem;
+  }
+
+  body .main-section__title {
+    font-size: 2rem;
+  }
+
+  .main-section__top-bar {
+    margin-bottom: 1.5rem;
+  }
+
+  body .main-section__sort-icon {
+    height: 30px;
+    width: auto;
+  }
+
+  body .main-section__sort-container {
+    display: none;
+  }
+
+  .main-section__sort-container-mobile {
+    position: relative;
+    display: inline-block;
+  }
+
+  body .todo-item {
+    padding-right: 0.5rem;
+  }
+
+  body .todo-item__task {
+    font-size: 12.5px;
+  }
+
+  body .todo-item__notes {
+    font-size: 0.75rem;
+  }
+
+  body .todo-item__group-two {
+    min-width: 40px;
+    padding-right: 0;
+  }
+
+  body .todo-item__icon {
+    margin-left: 0.5rem;
+    height: 18px;
+    width: auto;
+  }
+
+  body .todo-item__due-date-text {
+    font-size: 0.8rem;
+  }
+
+  body .todo-item__due-date-img {
+    height: 17.5px;
+  }
+
+  /* NAVBAR */
+
+  .logo1,
+  .logo3 {
+    display: none;
+  }
+}

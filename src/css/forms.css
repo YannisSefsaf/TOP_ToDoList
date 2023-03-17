@@ -1,0 +1,310 @@
+/* FORM: EDIT TODO */
+
+.form__edit-todo {
+  z-index: 2;
+  position: fixed;
+  top: 15vh;
+  left: 20vw;
+  display: flex;
+  border: 1px solid var(--color-black-05);
+  border-radius: 10px;
+  background-color: white;
+  height: 70vh;
+  width: 60vw;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.1) 3px 3px 8px;
+}
+
+.form__edit-main {
+  display: flex;
+  flex-direction: column;
+  width: 66.6%;
+  padding: 3rem;
+  gap: 2rem;
+}
+
+.form__edit-sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: var(--color-grey-01);
+  width: 33.3%;
+  padding: 0rem 2rem;
+  gap: 2rem;
+}
+
+.form__edit-sidebar > * {
+  display: block;
+}
+
+.form__edit-sidebar > * > *:not(.button) {
+  width: 100%;
+}
+
+.form__edit-todo-input {
+  margin-bottom: 0.5rem;
+}
+
+.form__add-todo-input,
+.form__edit-todo-input {
+  display: block;
+}
+
+.form-title {
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  font-weight: var(--font-weight-625);
+}
+
+.button-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#editItemButton {
+  height: 30px;
+}
+
+#editDueDate,
+#editPriority,
+#editStatus,
+.select__edit-project {
+  height: 35px !important;
+}
+
+#editDueDate {
+  border: 1px solid #dee2e6;
+  border-radius: 0.375rem;
+  background: inherit;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+#editName,
+#editDescription,
+#editDueDate,
+#editPriority,
+#editStatus,
+#editProject {
+  font-size: 0.875rem !important;
+}
+
+#editName {
+  height: 50px;
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 20px;
+}
+
+#editDescription {
+  height: 70%;
+  width: 100%;
+  resize: none;
+  box-sizing: border-box;
+  padding: 0.75rem;
+  font-size: 1rem;
+}
+
+#editDescription,
+#editName {
+  border: 1px solid #dee2e6;
+  border-radius: 0.375rem;
+  margin-top: 0;
+  margin-bottom: 0;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+/* FORM: VIEW TODO */
+
+.form__view-todo {
+  z-index: 2;
+  position: absolute;
+  top: 20vh;
+  left: 20vw;
+  display: flex;
+  border: 1px solid var(--color-black-05);
+  border-radius: 10px;
+  background-color: white;
+  height: 60vh;
+  width: 60vw;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.1) 3px 3px 8px;
+}
+
+.form__view-main {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  padding: 3rem;
+  gap: 2rem;
+}
+
+.form__view-h4 {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  font-weight: var(--font-weight-600);
+}
+
+.form__view-sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: var(--color-grey-01);
+  width: 30%;
+  padding: 3rem 2rem;
+  gap: 3.25rem;
+}
+
+.todo-details {
+  font-size: 0.875rem;
+  font-weight: var(--font-weight-475);
+}
+
+.form-title-view {
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  font-weight: var(--font-weight-625);
+}
+
+/* FORM: ADD PROJECT */
+
+.form__add-project {
+  z-index: 2;
+  position: absolute;
+  top: 35vh;
+  left: 35vw;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-black-05);
+  border-radius: 10px;
+  background-color: white;
+  height: 30vh;
+  width: 30vw;
+  padding: 2rem;
+  box-shadow: rgba(0, 0, 0, 0.1) 3px 3px 8px;
+  gap: 2rem;
+}
+
+.form__add-project-main-div {
+  display: flex;
+  align-items: center;
+}
+
+.project-form-title {
+  font-size: 2rem;
+  font-weight: var(--font-weight-625);
+  text-align: center;
+}
+
+.form__add-project > *,
+.form__add-project > * > * {
+  margin: 0 auto;
+}
+
+.form__input-name {
+  display: block;
+  margin-top: 0.5rem;
+}
+
+.form__add-project-sub-div-2 {
+  display: flex;
+}
+
+.form__add-project-button {
+  margin: 0 auto;
+}
+
+.form__add-project-sub-div-1 {
+  margin-bottom: 2rem;
+}
+
+/* FORM ADD TODO */
+
+.form__add-todo-container {
+  border: 1px solid var(--color-grey-05);
+  border-radius: 8px;
+  margin-top: 1rem;
+  width: 99.5%;
+}
+
+.form__add-todo-grid {
+  display: grid;
+  grid-template-areas:
+    "name name name name name name"
+    "desc desc desc desc desc desc"
+    "project project date date . ."
+    "priority priority status status . buttons";
+  padding: 1.5rem;
+  gap: 30px;
+}
+
+.form__add-todo-input:focus-visible {
+  outline: none;
+}
+
+.form__buttons-area {
+  display: flex;
+  justify-content: space-evenly;
+  grid-area: buttons;
+}
+
+#name,
+#description {
+  border: none;
+}
+
+#divName {
+  grid-area: name;
+}
+
+#divNotes {
+  grid-area: desc;
+}
+
+#divProject {
+  grid-area: project;
+}
+
+#name {
+  height: 35px;
+  width: 100%;
+  font-size: 20px;
+}
+
+#description {
+  font-size: 18px;
+}
+
+#project,
+#priority,
+#status,
+#dueDate,
+#description {
+  width: 100%;
+}
+
+#divDate {
+  grid-area: date;
+}
+
+#divPriority {
+  grid-area: priority;
+}
+
+#divStatus {
+  grid-area: status;
+}
+
+#editDueDate,
+#dueDate {
+  padding-right: 0.75rem;
+  font-size: 1rem;
+}
+
+#project,
+#status,
+#priority,
+#dueDate {
+  box-sizing: border-box;
+  font-size: 1rem;
+}

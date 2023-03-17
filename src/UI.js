@@ -1,231 +1,15 @@
 import { Todo, Project, TodoList } from "./models.js";
 import { format } from "date-fns";
 import { closeHamburgerMenu } from "./hamburger.js";
-/* import { resetInitialize } from "./index.js";
- */
+
 export class TodoListView {
   constructor(todoList) {
     this.todoList = todoList;
     this.currentCategory = { category: "inbox" };
     this.currentSortOption = { sortOption: "dateAddedNewest" };
 
-    this.resetButton = document.getElementById("resetBtn");
-
-    /* FORM - ADD PROJECT */
-
-    this.forms = document.querySelectorAll(".needs-validation");
-
-    this.formAddProjectLink = document.querySelector(".form__add-project");
-
-    this.formViewTodo = document.querySelector(".form__view-todo");
-    this.viewTitle = document.querySelector("#titleView");
-    this.viewNotes = document.querySelector("#notesView");
-    this.viewProject = document.querySelector("#projectView");
-    this.viewPriority = document.querySelector("#priorityView");
-    this.viewDueDate = document.querySelector("#dueDateView");
-    this.viewStatus = document.querySelector("#statusView");
-
-    /* FORM - EDIT TODO */
-
-    this.formEditTodo = document.querySelector(".form__edit-todo");
-    this.editName = document.querySelector("#editName");
-    this.editDescription = document.querySelector("#editDescription");
-    this.editProject = document.querySelector(".select__edit-project");
-    this.editPriority = document.querySelector("#editPriority");
-    this.editDueDate = document.querySelector("#editDueDate");
-    this.editStatus = document.querySelector("#editStatus");
-    this.editId = document.querySelector(".id");
-    this.editButton = document.querySelector("#editItemButton");
-
-    /* SIDEBAR MOBILE - INBOX & DATES */
-    this.sidebarMobile = document.querySelector(".sidebar-mobile");
-
-    this.inboxLinkMobile = document.querySelector("#inbox-mobile");
-    this.todayLinkMobile = document.querySelector("#today-mobile");
-    this.nextWeekLinkMobile = document.querySelector("#nextWeek-mobile");
-
-    this.inboxCountLinkMobile = document.querySelector("#inboxCount-mobile");
-    this.todayCountLinkMobile = document.querySelector("#todayCount-mobile");
-    this.nextWeekCountLinkMobile = document.querySelector(
-      "#nextWeekCount-mobile"
-    );
-
-    /* SIDEBAR MOBILE - PROJECTS */
-    this.sidebarProjectGroupMobile = document.querySelector(
-      ".sidebar__group-two-expandable-projects-mobile"
-    ); // ok
-    this.projectNamesLinkMobile = document.querySelector(
-      "#sidebar__group-two-expandable-project-names-mobile"
-    ); // ok
-
-    this.projectDeleteLinkMobile = document.querySelector(
-      "#sidebar__group-two-expandable-project-delete-icons-mobile"
-    ); // ok
-
-    this.projectTodoCountLinkMobile = document.querySelector(
-      "#sidebar__group-two-expandable-project-count-mobile"
-    ); // ok
-
-    this.addProjectMobile = document.querySelector("#addProject-mobile"); // ok
-
-    this.arrowShowProjectsMobile = document.querySelector(
-      ".sidebar__group-two-icon-arrow-img-1-mobile"
-    ); // ok
-
-    /* SIDEBAR MOBILE - STATUS */
-    this.sidebarStatusGroupMobile = document.querySelector(
-      ".sidebar__group-two-expandable-status-mobile"
-    ); // ok
-
-    this.isCompletedLinkMobile = document.querySelector("#completed-mobile"); // ok
-    this.isNotCompletedLinkMobile = document.querySelector(
-      "#notCompleted-mobile"
-    ); // ok
-    this.isCompletedCountLinkMobile = document.querySelector(
-      "#completedCount-mobile"
-    ); // ok
-    this.isNotCompletedCountLinkMobile = document.querySelector(
-      "#notCompletedCount-mobile"
-    ); // ok
-
-    this.isCompletedCountUlMobile = document.querySelector(
-      "#sidebar__group-two-expandable-project-status-count-mobile"
-    ); // ok
-
-    this.arrowShowStatusMobile = document.querySelector(
-      ".sidebar__group-two-icon-arrow-img-2-mobile"
-    ); // ok
-
-    /* SIDEBAR MOBILE - FILTER */
-    this.sidebarPriorityGroupMobile = document.querySelector(
-      ".sidebar__group-two-expandable-priority-mobile"
-    );
-    this.arrowShowPriorityMobile = document.querySelector(
-      ".sidebar__group-two-icon-arrow-img-3-mobile"
-    );
-
-    this.highPriorityLinkMobile = document.querySelector("#high-mobile");
-    this.mediumPriorityLinkMobile = document.querySelector("#medium-mobile");
-    this.lowPriorityLinkMobile = document.querySelector("#low-mobile");
-
-    this.highPriorityCountLinkMobile =
-      document.querySelector("#highCount-mobile");
-    this.mediumPriorityCountLinkMobile = document.querySelector(
-      "#mediumCount-mobile"
-    );
-    this.lowPriorityCountLinkMobile =
-      document.querySelector("#lowCount-mobile");
-
-    /* SIDEBAR - INBOX & DATES */
-    this.inboxLink = document.querySelector("#inbox");
-    this.todayLink = document.querySelector("#today");
-    this.nextWeekLink = document.querySelector("#nextWeek");
-
-    this.inboxCountLink = document.querySelector("#inboxCount");
-    this.todayCountLink = document.querySelector("#todayCount");
-    this.nextWeekCountLink = document.querySelector("#nextWeekCount");
-
-    /* SIDEBAR - PROJECTS */
-    this.sidebarProjectGroup = document.querySelector(
-      ".sidebar__group-two-expandable-projects"
-    );
-    this.projectNamesLink = document.querySelector(
-      "#sidebar__group-two-expandable-project-names"
-    );
-
-    this.projectDeleteLink = document.querySelector(
-      "#sidebar__group-two-expandable-project-delete-icons"
-    );
-
-    this.projectTodoCountLink = document.querySelector(
-      "#sidebar__group-two-expandable-project-count"
-    );
-    this.addProject = document.querySelector("#addProject");
-
-    this.arrowShowProjects = document.querySelector(
-      ".sidebar__group-two-icon-arrow-img-1"
-    );
-
-    /* SIDEBAR - STATUS */
-    this.sidebarStatusGroup = document.querySelector(
-      ".sidebar__group-two-expandable-status"
-    );
-
-    this.isCompletedLink = document.querySelector("#completed");
-    this.isNotCompletedLink = document.querySelector("#notCompleted");
-    this.isCompletedCountLink = document.querySelector("#completedCount");
-    this.isNotCompletedCountLink = document.querySelector("#notCompletedCount");
-
-    this.isCompletedCountUl = document.querySelector(
-      ".sidebar__group-two-expandable-project-status-count"
-    );
-
-    this.arrowShowStatus = document.querySelector(
-      ".sidebar__group-two-icon-arrow-img-2"
-    );
-
-    /* SIDEBAR - FILTER */
-    this.sidebarPriorityGroup = document.querySelector(
-      ".sidebar__group-two-expandable-priority"
-    );
-    this.arrowShowPriority = document.querySelector(
-      ".sidebar__group-two-icon-arrow-img-3"
-    );
-
-    this.highPriorityLink = document.querySelector("#high");
-    this.mediumPriorityLink = document.querySelector("#medium");
-    this.lowPriorityLink = document.querySelector("#low");
-
-    this.highPriorityCountLink = document.querySelector("#highCount");
-    this.mediumPriorityCountLink = document.querySelector("#mediumCount");
-    this.lowPriorityCountLink = document.querySelector("#lowCount");
-
-    /* MAIN SECTION */
-    this.todoGrid = document.querySelector(".main-section__todo-grid");
-    this.title = document.querySelector(".main-section__title");
-    this.sortBy = document.querySelector(".sort-outside-container");
-    this.sortByMobile = document.querySelector(
-      ".main-section__sort-container-mobile"
-    );
-    this.sortByFieldsContainer = document.querySelector(
-      ".main-section__sort-fields-container"
-    );
-    this.sortByFieldsContainerMobile = document.querySelector(
-      ".main-section__sort-fields-container-mobile"
-    );
-    this.sortByText = document.querySelector(".main-section__sort-text");
-
-    /* BUTTONS */
-    this.buttonAddItem = document.querySelector("#itemButton"); // OK
-    this.buttonAddProject = document.querySelector("#projectButton"); // OK
-    this.addProjectButton = document.querySelector("#addProjectButton");
-    this.showTodoForm = document.querySelector(".main-section__add-todo"); //
-    this.buttonCancel = document.querySelector(".button__cancel");
-
-    /* FORM ADD PROJECT */
-    this.formProjectName = document.querySelector("#projectName");
-
-    /* FORM ADD TODO */
-    this.formAddTodo = document.querySelector(".form__add-todo-container");
-    this.todoName = document.querySelector("#name");
-    this.todoDescription = document.querySelector("#description");
-    this.todoProject = document.querySelector("#project");
-    this.todoPriority = document.querySelector("#priority");
-    this.todoDueDate = document.querySelector("#dueDate");
-    this.todoStatus = document.querySelector("#status");
-
-    /* TODO-ITEM */
-
-    this.editIcon = document.querySelector("#editIcon");
-    this.deleteIcon = document.querySelector("#deleteIcon");
-
-    /* SEARCH BAR */
-    this.searchBar = document.querySelector(".navbar__search-bar-container");
-
-    /* BACKGROUND */
-    this.background = document.querySelector(".background");
-
-    /* INITALIZE */
+    /* INITIALIZE */
+    this.initQuerySelectors();
     this.todoDueDate.valueAsDate = new Date();
     this.todosToDisplay = this.todoList.getAllTodos();
     this.renderMobileSidebar();
@@ -376,7 +160,7 @@ export class TodoListView {
 
     this.projectDeleteLinkMobile.addEventListener("click", (e) => {
       if (e.target.matches(".sidebar__group-two-icon-delete-img")) {
-        this.deleteProjectFunc(e.target.id);
+        this.deleteProject(e.target.id);
       }
     });
 
@@ -457,11 +241,15 @@ export class TodoListView {
 
     this.projectDeleteLink.addEventListener("click", (e) => {
       if (e.target.matches(".sidebar__group-two-icon-delete-img")) {
-        this.deleteProjectFunc(e.target.id);
+        this.deleteProject(e.target.id);
       }
     });
 
     this.showTodoForm.addEventListener("click", () => {
+      this.toggleAddTodoForm();
+    });
+
+    this.buttonCancel.addEventListener("click", () => {
       this.toggleAddTodoForm();
     });
 
@@ -481,6 +269,7 @@ export class TodoListView {
     });
 
     this.addProject.addEventListener("click", () => this.showAddProjectForm());
+
     this.addProjectMobile.addEventListener("click", () => {
       closeHamburgerMenu();
       this.sidebarMobile.classList.remove("sidebar-mobile--shown");
@@ -495,14 +284,13 @@ export class TodoListView {
     });
 
     this.addProjectButton.addEventListener("click", (e) =>
-      this.addProjectFunc(e, this.formProjectName.value)
+      this.addProject(e, this.formProjectName.value)
     );
 
-    this.buttonAddItem.addEventListener("click", (e) => this.addTodoFunc(e));
+    this.buttonAddItem.addEventListener("click", (e) => this.addTodo(e));
 
     this.todoGrid.addEventListener("click", (e) => {
       if (
-        /*    e.target.classList.contains("todo-item__") || */
         e.target.classList.contains("todo-item__project-name") ||
         e.target.classList.contains("todo-item__todo") ||
         e.target.classList.contains("todo-item__notes") ||
@@ -515,7 +303,7 @@ export class TodoListView {
 
     this.todoGrid.addEventListener("click", (e) => {
       if (e.target.id === "deleteIcon") {
-        this.deleteTodoFunc(e, e.target.dataset.id);
+        this.deleteTodo(e, e.target.dataset.id);
       }
     });
 
@@ -534,7 +322,6 @@ export class TodoListView {
     });
 
     this.sortBy.addEventListener("click", () => {
-      console.log("ako");
       this.toggleSortByMenu();
     });
 
@@ -576,9 +363,9 @@ export class TodoListView {
     });
   }
 
-  // add/delete todo and project functions
+  // add/delete/edit todo and project functions
 
-  addTodoFunc(e) {
+  addTodo(e) {
     e.preventDefault();
     const form = e.target.form;
     if (form.checkValidity()) {
@@ -603,7 +390,7 @@ export class TodoListView {
     }
   }
 
-  addProjectFunc(e, projectName) {
+  addProject(e, projectName) {
     e.preventDefault();
     const form = e.target.form;
     if (form.checkValidity()) {
@@ -617,12 +404,12 @@ export class TodoListView {
     }
   }
 
-  deleteTodoFunc(e, todoId) {
+  deleteTodo(e, todoId) {
     e.preventDefault();
     this.todoList.deleteTodo(todoId);
   }
 
-  deleteProjectFunc(projectId) {
+  deleteProject(projectId) {
     const projectToDelete = this.todoList.findProject(projectId);
     const currentProjectId = this.getCurrentId();
     if (projectToDelete.id === currentProjectId) {
@@ -633,6 +420,37 @@ export class TodoListView {
       this.renderTodoList(filteredTodos);
     }
     this.todoList.deleteProject(projectId);
+  }
+
+  editTodo(todoId, e) {
+    e.preventDefault();
+    const form = e.target.form;
+    if (form.checkValidity()) {
+      const todo = this.todoList.findTodoById(todoId);
+      const date = this.editDueDate.value.split("-").map(Number);
+      const originalProjectId = this.editId.dataset.projectId;
+      const newProjectId =
+        this.editProject.options[this.editProject.selectedIndex].dataset.id;
+      todo.updatePriority(this.editPriority.value);
+      todo.updateDueDate(
+        format(new Date(date[0], date[1] - 1, date[2]), "yyyy-MM-dd")
+      );
+      todo.updateProject(this.editProject.value);
+      todo.updateProjectId(newProjectId);
+      todo.updateStatus(this.editStatus.value);
+      todo.updateTitle(this.editName.value);
+      todo.updateDescription(this.editDescription.value);
+      if (!(originalProjectId === newProjectId)) {
+        this.todoList.deleteTodo(`${todo.id}`);
+        this.todoList.addATodo(newProjectId, todo);
+      }
+      this.formEditTodo.classList.remove("show");
+      this.background.classList.remove("show");
+      this.updateView();
+    } else {
+      e.stopPropagation();
+      form.classList.add("was-validated");
+    }
   }
 
   // show hide functions
@@ -688,63 +506,6 @@ export class TodoListView {
     );
     this.editId.id = `${todo.id}`;
     this.editId.dataset.projectId = `${todo.projectId}`;
-  }
-
-  editTodo(todoId, e) {
-    e.preventDefault();
-    const form = e.target.form;
-    if (form.checkValidity()) {
-      const todo = this.todoList.findTodoById(todoId);
-      const date = this.editDueDate.value.split("-").map(Number);
-      const originalProjectId = this.editId.dataset.projectId;
-      const newProjectId =
-        this.editProject.options[this.editProject.selectedIndex].dataset.id;
-      todo.updatePriority(this.editPriority.value);
-      todo.updateDueDate(
-        format(new Date(date[0], date[1] - 1, date[2]), "yyyy-MM-dd")
-      );
-      todo.updateProject(this.editProject.value);
-      todo.updateProjectId(newProjectId);
-      todo.updateStatus(this.editStatus.value);
-      todo.updateTitle(this.editName.value);
-      todo.updateDescription(this.editDescription.value);
-      if (!(originalProjectId === newProjectId)) {
-        this.todoList.deleteTodo(`${todo.id}`);
-        this.todoList.addATodo(newProjectId, todo);
-      }
-      this.formEditTodo.classList.remove("show");
-      this.background.classList.remove("show");
-      this.updateView();
-    } else {
-      e.stopPropagation();
-      form.classList.add("was-validated");
-    }
-  }
-
-  convertComplete(value) {
-    if (value === "true") {
-      return 2;
-    } else {
-      return 1;
-    }
-  }
-
-  convertCompleteToString(value) {
-    if (value === "true") {
-      return "Completed";
-    } else {
-      return "Not Completed";
-    }
-  }
-
-  convertPriority(value) {
-    if (value === "1") {
-      return "Low";
-    } else if (value === "2") {
-      return "Medium";
-    } else {
-      return "High";
-    }
   }
 
   // set and get category & id functions
@@ -1148,8 +909,6 @@ export class TodoListView {
         dueDateImg.src = "./img/1052664-200.png";
         dueDateText.classList.add("inbox");
       }
-      /* const buttonDetails = this.createElem("a", "button__details", "Details");
-      buttonDetails.classList.add("button"); */
       dueDateDiv.appendChild(dueDateImg);
       dueDateDiv.appendChild(dueDateText);
       let editImg = this.createElem(
@@ -1196,7 +955,6 @@ export class TodoListView {
       task.appendChild(dueDateDiv);
       itemGroupOne.appendChild(statusCircle);
       itemGroupOne.appendChild(task);
-      /* itemGroupTwo.appendChild(buttonDetails); */
       itemGroupTwo.appendChild(editImg);
       itemGroupTwo.appendChild(deleteImg);
       todoItem.appendChild(itemGroupOne);
@@ -1407,6 +1165,32 @@ export class TodoListView {
     return isComplete;
   }
 
+  convertComplete(value) {
+    if (value === "true") {
+      return 2;
+    } else {
+      return 1;
+    }
+  }
+
+  convertCompleteToString(value) {
+    if (value === "true") {
+      return "Completed";
+    } else {
+      return "Not Completed";
+    }
+  }
+
+  convertPriority(value) {
+    if (value === "1") {
+      return "Low";
+    } else if (value === "2") {
+      return "Medium";
+    } else {
+      return "High";
+    }
+  }
+
   returnFilteredArray(category, projectId, searchText) {
     let todos;
     this.setCurrentCategoryAndId(category, projectId);
@@ -1460,5 +1244,243 @@ export class TodoListView {
         break;
     }
     return todos;
+  }
+  // init functions
+
+  initAddTodo() {
+    /* FORM ADD TODO */
+    this.formAddTodo = document.querySelector(".form__add-todo-container");
+    this.todoName = document.querySelector("#name");
+    this.todoDescription = document.querySelector("#description");
+    this.todoProject = document.querySelector("#project");
+    this.todoPriority = document.querySelector("#priority");
+    this.todoDueDate = document.querySelector("#dueDate");
+    this.todoStatus = document.querySelector("#status");
+  }
+
+  initAddProjectForm() {
+    /* FORM ADD PROJECT */
+    this.formProjectName = document.querySelector("#projectName");
+    this.formAddProjectLink = document.querySelector(".form__add-project");
+  }
+
+  initViewProjectForm() {
+    this.forms = document.querySelectorAll(".needs-validation");
+    this.formViewTodo = document.querySelector(".form__view-todo");
+    this.viewTitle = document.querySelector("#titleView");
+    this.viewNotes = document.querySelector("#notesView");
+    this.viewProject = document.querySelector("#projectView");
+    this.viewPriority = document.querySelector("#priorityView");
+    this.viewDueDate = document.querySelector("#dueDateView");
+    this.viewStatus = document.querySelector("#statusView");
+  }
+
+  initEditTodoForm() {
+    /* FORM - EDIT TODO */
+    this.formEditTodo = document.querySelector(".form__edit-todo");
+    this.editName = document.querySelector("#editName");
+    this.editDescription = document.querySelector("#editDescription");
+    this.editProject = document.querySelector(".select__edit-project");
+    this.editPriority = document.querySelector("#editPriority");
+    this.editDueDate = document.querySelector("#editDueDate");
+    this.editStatus = document.querySelector("#editStatus");
+    this.editId = document.querySelector(".id");
+    this.editButton = document.querySelector("#editItemButton");
+  }
+
+  initMobileSidebar() {
+    /* SIDEBAR MOBILE - INBOX & DATES */
+    this.sidebarMobile = document.querySelector(".sidebar-mobile");
+
+    this.inboxLinkMobile = document.querySelector("#inbox-mobile");
+    this.todayLinkMobile = document.querySelector("#today-mobile");
+    this.nextWeekLinkMobile = document.querySelector("#nextWeek-mobile");
+
+    this.inboxCountLinkMobile = document.querySelector("#inboxCount-mobile");
+    this.todayCountLinkMobile = document.querySelector("#todayCount-mobile");
+    this.nextWeekCountLinkMobile = document.querySelector(
+      "#nextWeekCount-mobile"
+    );
+
+    /* SIDEBAR MOBILE - PROJECTS */
+    this.sidebarProjectGroupMobile = document.querySelector(
+      ".sidebar__group-two-expandable-projects-mobile"
+    );
+    this.projectNamesLinkMobile = document.querySelector(
+      "#sidebar__group-two-expandable-project-names-mobile"
+    );
+
+    this.projectDeleteLinkMobile = document.querySelector(
+      "#sidebar__group-two-expandable-project-delete-icons-mobile"
+    );
+
+    this.projectTodoCountLinkMobile = document.querySelector(
+      "#sidebar__group-two-expandable-project-count-mobile"
+    );
+
+    this.addProjectMobile = document.querySelector("#addProject-mobile");
+
+    this.arrowShowProjectsMobile = document.querySelector(
+      ".sidebar__group-two-icon-arrow-img-1-mobile"
+    );
+
+    /* SIDEBAR MOBILE - STATUS */
+    this.sidebarStatusGroupMobile = document.querySelector(
+      ".sidebar__group-two-expandable-status-mobile"
+    );
+
+    this.isCompletedLinkMobile = document.querySelector("#completed-mobile");
+    this.isNotCompletedLinkMobile = document.querySelector(
+      "#notCompleted-mobile"
+    );
+    this.isCompletedCountLinkMobile = document.querySelector(
+      "#completedCount-mobile"
+    );
+    this.isNotCompletedCountLinkMobile = document.querySelector(
+      "#notCompletedCount-mobile"
+    );
+
+    this.isCompletedCountUlMobile = document.querySelector(
+      "#sidebar__group-two-expandable-project-status-count-mobile"
+    );
+
+    this.arrowShowStatusMobile = document.querySelector(
+      ".sidebar__group-two-icon-arrow-img-2-mobile"
+    );
+
+    /* SIDEBAR MOBILE - FILTER */
+    this.sidebarPriorityGroupMobile = document.querySelector(
+      ".sidebar__group-two-expandable-priority-mobile"
+    );
+    this.arrowShowPriorityMobile = document.querySelector(
+      ".sidebar__group-two-icon-arrow-img-3-mobile"
+    );
+
+    this.highPriorityLinkMobile = document.querySelector("#high-mobile");
+    this.mediumPriorityLinkMobile = document.querySelector("#medium-mobile");
+    this.lowPriorityLinkMobile = document.querySelector("#low-mobile");
+
+    this.highPriorityCountLinkMobile =
+      document.querySelector("#highCount-mobile");
+    this.mediumPriorityCountLinkMobile = document.querySelector(
+      "#mediumCount-mobile"
+    );
+    this.lowPriorityCountLinkMobile =
+      document.querySelector("#lowCount-mobile");
+  }
+
+  initSidebar() {
+    /* SIDEBAR - INBOX & DATES */
+    this.inboxLink = document.querySelector("#inbox");
+    this.todayLink = document.querySelector("#today");
+    this.nextWeekLink = document.querySelector("#nextWeek");
+
+    this.inboxCountLink = document.querySelector("#inboxCount");
+    this.todayCountLink = document.querySelector("#todayCount");
+    this.nextWeekCountLink = document.querySelector("#nextWeekCount");
+
+    /* SIDEBAR - PROJECTS */
+    this.sidebarProjectGroup = document.querySelector(
+      ".sidebar__group-two-expandable-projects"
+    );
+    this.projectNamesLink = document.querySelector(
+      "#sidebar__group-two-expandable-project-names"
+    );
+
+    this.projectDeleteLink = document.querySelector(
+      "#sidebar__group-two-expandable-project-delete-icons"
+    );
+
+    this.projectTodoCountLink = document.querySelector(
+      "#sidebar__group-two-expandable-project-count"
+    );
+    this.addProject = document.querySelector("#addProject");
+
+    this.arrowShowProjects = document.querySelector(
+      ".sidebar__group-two-icon-arrow-img-1"
+    );
+
+    /* SIDEBAR - STATUS */
+    this.sidebarStatusGroup = document.querySelector(
+      ".sidebar__group-two-expandable-status"
+    );
+
+    this.isCompletedLink = document.querySelector("#completed");
+    this.isNotCompletedLink = document.querySelector("#notCompleted");
+    this.isCompletedCountLink = document.querySelector("#completedCount");
+    this.isNotCompletedCountLink = document.querySelector("#notCompletedCount");
+
+    this.isCompletedCountUl = document.querySelector(
+      ".sidebar__group-two-expandable-project-status-count"
+    );
+
+    this.arrowShowStatus = document.querySelector(
+      ".sidebar__group-two-icon-arrow-img-2"
+    );
+
+    /* SIDEBAR - FILTER */
+    this.sidebarPriorityGroup = document.querySelector(
+      ".sidebar__group-two-expandable-priority"
+    );
+    this.arrowShowPriority = document.querySelector(
+      ".sidebar__group-two-icon-arrow-img-3"
+    );
+
+    this.highPriorityLink = document.querySelector("#high");
+    this.mediumPriorityLink = document.querySelector("#medium");
+    this.lowPriorityLink = document.querySelector("#low");
+
+    this.highPriorityCountLink = document.querySelector("#highCount");
+    this.mediumPriorityCountLink = document.querySelector("#mediumCount");
+    this.lowPriorityCountLink = document.querySelector("#lowCount");
+  }
+
+  initMainSection() {
+    /* MAIN SECTION */
+    this.todoGrid = document.querySelector(".main-section__todo-grid");
+    this.title = document.querySelector(".main-section__title");
+    this.sortBy = document.querySelector(".sort-outside-container");
+    this.sortByMobile = document.querySelector(
+      ".main-section__sort-container-mobile"
+    );
+    this.sortByFieldsContainer = document.querySelector(
+      ".main-section__sort-fields-container"
+    );
+    this.sortByFieldsContainerMobile = document.querySelector(
+      ".main-section__sort-fields-container-mobile"
+    );
+    this.sortByText = document.querySelector(".main-section__sort-text");
+
+    /* TODO-ITEM */
+
+    this.editIcon = document.querySelector("#editIcon");
+    this.deleteIcon = document.querySelector("#deleteIcon");
+
+    /* SEARCH BAR */
+    this.searchBar = document.querySelector(".navbar__search-bar-container");
+
+    /* BACKGROUND */
+    this.background = document.querySelector(".background");
+  }
+
+  initButtons() {
+    /* BUTTONS */
+    this.buttonAddItem = document.querySelector("#itemButton"); // OK
+    this.buttonAddProject = document.querySelector("#projectButton"); // OK
+    this.addProjectButton = document.querySelector("#addProjectButton");
+    this.showTodoForm = document.querySelector(".main-section__add-todo"); //
+    this.buttonCancel = document.querySelector(".button__cancel");
+    this.resetButton = document.getElementById("resetBtn");
+  }
+
+  initQuerySelectors() {
+    this.initAddTodo();
+    this.initAddProjectForm();
+    this.initViewProjectForm();
+    this.initEditTodoForm();
+    this.initMobileSidebar();
+    this.initSidebar();
+    this.initMainSection();
+    this.initButtons();
   }
 }

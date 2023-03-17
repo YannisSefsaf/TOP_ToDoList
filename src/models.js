@@ -73,10 +73,6 @@ export class Todo {
     this.observers.push(observer);
   }
 
-  /*   removeObserver(observer) {
-    this.observers.push(observer);
-  } */
-
   notifyObservers() {
     this.observers.forEach((observer) => observer(this));
   }
@@ -111,10 +107,6 @@ export class Project {
   // observer pattern methods
 
   addObserver(observer) {
-    this.observers.push(observer);
-  }
-
-  removeObserver(observer) {
     this.observers.push(observer);
   }
 
@@ -318,10 +310,6 @@ export class TodoList {
   addObserver(observer) {
     this.observers.push(observer);
   }
-
-  /*   removeObserver(observer) {
-    this.observers.push(observer);
-  } */
 
   notifyObservers() {
     this.observers.forEach((observer) => observer());
