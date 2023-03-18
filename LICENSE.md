@@ -1,8 +1,8 @@
-Third-party licenses
+<h3>Third-party licenses</h3>
 
 Icons: <a href="https://www.flaticon.com/free-icons/list" title="list icons">List icons created by Freepik - Flaticon</a>
 
-MIT License
+<h3>MIT License</h3>
 
 Copyright (c) 2023 Yannis Sefsaf
 
