@@ -1,6 +1,9 @@
 <h3>Third-party licenses</h3>
 
-Icons: <a href="https://www.flaticon.com/free-icons/list" title="list icons">List icons created by Freepik - Flaticon</a>
+Icons: 
+<ul>
+<li><a href="https://www.flaticon.com/free-icons/list" title="list icons">List icons created by Freepik - Flaticon</a></li>
+<li><a href="https://www.flaticon.com/free-icons/delete" title="delete icons">Delete icons created by Kiranshastry - Flaticon</a></li>
 
 <h3>MIT License</h3>
 
