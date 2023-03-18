@@ -171,14 +171,14 @@
 .form__add-project {
   z-index: 2;
   position: absolute;
-  top: 35vh;
+  top: 30vh;
   left: 35vw;
   display: flex;
   flex-direction: column;
   border: 1px solid var(--color-black-05);
   border-radius: 10px;
   background-color: white;
-  height: 30vh;
+  height: 40vh;
   width: 30vw;
   padding: 2rem;
   box-shadow: rgba(0, 0, 0, 0.1) 3px 3px 8px;
