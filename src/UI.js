@@ -268,7 +268,9 @@ export class TodoListView {
       this.renderTodoList(filteredTodos);
     });
 
-    this.addProject.addEventListener("click", () => this.showAddProjectForm());
+    this.addProjectDesktop.addEventListener("click", () =>
+      this.showAddProjectForm()
+    );
 
     this.addProjectMobile.addEventListener("click", () => {
       closeHamburgerMenu();
@@ -283,9 +285,9 @@ export class TodoListView {
       this.removeViewTodoForm();
     });
 
-    this.addProjectButton.addEventListener("click", (e) =>
-      this.addProject(e, this.formProjectName.value)
-    );
+    this.addProjectButton.addEventListener("click", (e) => {
+      this.addProject(e, this.formProjectName.value);
+    });
 
     this.buttonAddItem.addEventListener("click", (e) => this.addTodo(e));
 
@@ -1394,7 +1396,7 @@ export class TodoListView {
     this.projectTodoCountLink = document.querySelector(
       "#sidebar__group-two-expandable-project-count"
     );
-    this.addProject = document.querySelector("#addProject");
+    this.addProjectDesktop = document.querySelector("#addProject");
 
     this.arrowShowProjects = document.querySelector(
       ".sidebar__group-two-icon-arrow-img-1"
@@ -1474,6 +1476,7 @@ export class TodoListView {
   }
 
   initQuerySelectors() {
+    this.initButtons();
     this.initAddTodo();
     this.initAddProjectForm();
     this.initViewProjectForm();
@@ -1481,6 +1484,5 @@ export class TodoListView {
     this.initMobileSidebar();
     this.initSidebar();
     this.initMainSection();
-    this.initButtons();
   }
 }
