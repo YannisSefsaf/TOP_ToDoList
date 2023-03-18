@@ -17,7 +17,7 @@
 <p>To get started with the ToDoList App, simply visit the live demo page at https://yannissefsaf.github.io/TOP_ToDoList/</p>
 
 <h2>Usage</h2>
-<p>To use the app, simply add your todos and projects using the input fields provided. You can sort your todos by clicking on the sort button. To expand a todo and view its details, click on the arrow next to the todo. To edit or delete a todo or project, hover over it and click on the appropriate button.</p>
+<p>To use the app, simply add your todos and projects using the input fields provided. You can sort your todos by clicking on the sort button. Click directly on the todo in order to expand it and view its details. To edit or delete a todo or project, hover over it and click on the appropriate button.</p>
 
 <h2>Contributing</h2>
 <p>If you'd like to contribute to this project, please feel free to submit a pull request. Any suggestions or feedback are also welcome.</p>
